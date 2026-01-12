@@ -22,3 +22,23 @@ model User {
   role         Role     @relation(fields: [roleId], references: [id])
   createdAt    DateTime @default(now())
 }
+model Category {
+  id     Int    @id @default(autoincrement())
+  name   String @unique
+  quizzes Quiz[]
+}
+
+model Quiz {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  isActive    Boolean   @default(true)
+  categoryId  Int
+  createdBy   Int
+
+  category Category @relation(fields: [categoryId], references: [id])
+  creator  User     @relation(fields: [createdBy], references: [id])
+
+  attempts QuizAttempt[]
+}
+
