@@ -14,13 +14,15 @@ model Role {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  username     String   @unique
-  email        String   @unique
+  id           Int           @id @default(autoincrement())
+  username     String        @unique
+  email        String        @unique
   passwordHash String
   roleId       Int
-  role         Role     @relation(fields: [roleId], references: [id])
-  createdAt    DateTime @default(now())
+  role         Role          @relation(fields: [roleId], references: [id])
+  createdAt    DateTime      @default(now())
+  quizzes      Quiz[]
+  quizAttempts QuizAttempt[]
 }
 model Category {
   id     Int    @id @default(autoincrement())
@@ -47,6 +49,10 @@ model QuizAttempt {
   quizId    Int
   score     Int      @default(0)
   createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([quizId])
+  @@index([score])
 
   user User @relation(fields: [userId], references: [id])
   quiz Quiz @relation(fields: [quizId], references: [id])
