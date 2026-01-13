@@ -41,4 +41,27 @@ model Quiz {
 
   attempts QuizAttempt[]
 }
+model QuizAttempt {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  quizId    Int
+  score     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  quiz Quiz @relation(fields: [quizId], references: [id])
+
+  questions AttemptQuestion[]
+}
+
+model AttemptQuestion {
+  id           Int      @id @default(autoincrement())
+  attemptId    Int
+  question     String
+  options      Json
+  correctIndex Int
+  userAnswer   Int?
+
+  attempt QuizAttempt @relation(fields: [attemptId], references: [id])
+}
 
