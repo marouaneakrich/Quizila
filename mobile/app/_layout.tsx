@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { useAuthStore } from "../src/store/auth.store";
+import { useAuthStore } from "./src/stores/auth.store";
 
 export default function RootLayout() {
   const isAuthenticated = useAuthStore(
