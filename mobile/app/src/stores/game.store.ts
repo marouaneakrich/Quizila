@@ -40,6 +40,12 @@ export const useGameStore = create<GameState>((set) => ({
 
     return res.data.correct;
   },
+  reset: () =>
+    set({
+      questions: [],
+      currentIndex: 0,
+      score: 0,
+    }),
 
   next: () =>
     set(state => ({
