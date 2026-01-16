@@ -1,0 +1,73 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  username     String        @unique
+  email        String        @unique
+  passwordHash String
+  roleId       Int
+  role         Role          @relation(fields: [roleId], references: [id])
+  createdAt    DateTime      @default(now())
+  quizzes      Quiz[]
+  quizAttempts QuizAttempt[]
+}
+model Category {
+  id     Int    @id @default(autoincrement())
+  name   String @unique
+  quizzes Quiz[]
+}
+
+model Quiz {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  isActive    Boolean   @default(true)
+  categoryId  Int
+  createdBy   Int
+
+  category Category @relation(fields: [categoryId], references: [id])
+  creator  User     @relation(fields: [createdBy], references: [id])
+
+  attempts QuizAttempt[]
+}
+model QuizAttempt {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  quizId    Int
+  score     Int      @default(0)
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([quizId])
+  @@index([score])
+
+  user User @relation(fields: [userId], references: [id])
+  quiz Quiz @relation(fields: [quizId], references: [id])
+
+  questions AttemptQuestion[]
+}
+
+model AttemptQuestion {
+  id           Int      @id @default(autoincrement())
+  attemptId    Int
+  question     String
+  options      Json
+  correctIndex Int
+  userAnswer   Int?
+
+  attempt QuizAttempt @relation(fields: [attemptId], references: [id])
+}
+
