@@ -35,7 +35,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/quizila:latest
 
       - name: Deploy with Podman Compose
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v4
         with:
           host: ${{ secrets.VPS_IP }}
           username: deployer
