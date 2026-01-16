@@ -1,5 +1,4 @@
-name: Quizila
-
+name: Quizila Backend Deploy
 on:
   push:
     branches: [ "main" ]

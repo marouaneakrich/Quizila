@@ -1,25 +1,59 @@
 services:
-  api:
-    build: .
-    container_name: quizila-api
-    ports:
-      - "5000:5000"
-    env_file:
-      - .env
-    depends_on:
-      - db
-
-  db:
-    image: postgres:15
-    container_name: quizila-db
+  postgres:
+    image: postgres:15-alpine
+    container_name: quizila-postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: quizila
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: quizila
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - quizila-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quizila"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: quizila-redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - quizila-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--pass", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: ${DOCKERHUB_USERNAME}/quizila:latest
+    container_name: quizila-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://quizila:${POSTGRES_PASSWORD}@postgres:5432/quizila
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      NODE_ENV: production
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5000:5000"
+    networks:
+      - quizila-network
+
+networks:
+  quizila-network:
+    driver: bridge
 
 volumes:
   postgres_data:
+  redis_data:
