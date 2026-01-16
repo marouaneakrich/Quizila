@@ -24,7 +24,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/quizila:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/quizila:latest 
       
       - name: Deploy with Podman Compose
         uses: appleboy/ssh-action@master
@@ -38,7 +38,7 @@ jobs:
             cd /home/deployer/quizila
             
             # Create docker-compose.yml
-            cat > docker-compose.yml << 'EOF'
+            cat > docker-compose.yml << 'EOFCOMPOSE'
             version: '3.8'
             
             services:
@@ -100,14 +100,14 @@ jobs:
             volumes:
               postgres_data:
               redis_data:
-            EOF
+            EOFCOMPOSE
             
             # Create .env file
-            cat > .env << 'EOF'
+            cat > .env << 'EOFENV'
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-            EOF
+            EOFENV
             
             echo "🔐 Logging into Docker Hub..."
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | podman login docker.io -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
