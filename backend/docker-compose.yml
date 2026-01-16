@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17-alpine
+    image: docker.io/library/postgres:17-alpine
     container_name: quizila-postgres
     restart: unless-stopped
     environment:
@@ -18,7 +18,7 @@ services:
       retries: 5
 
   redis:
-    image: redis:7-alpine
+    image: docker.io/library/redis:7-alpine
     container_name: quizila-redis
     restart: unless-stopped
     command: redis-server --requirepass marouaneakrich
@@ -33,7 +33,7 @@ services:
       retries: 5
 
   backend:
-    image: marouaneakrich/quizila:latest
+    image: docker.io/marouaneakrich/quizila:latest
     container_name: quizila-backend
     restart: unless-stopped
     depends_on:
