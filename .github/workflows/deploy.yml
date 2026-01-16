@@ -9,14 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Ensures full git history for Docker
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: deployer/quizila:latest
 
-      - name: Create .env file
+      - name: Create .env file on VPS
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_IP }}
@@ -27,7 +31,7 @@ jobs:
             echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> /home/deployer/.env
             echo "NODE_ENV=production" >> /home/deployer/.env
 
-      - name: Deploy via SSH
+      - name: Deploy via SSH with Podman
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_IP }}
