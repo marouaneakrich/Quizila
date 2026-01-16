@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import prisma from "../../config/prisma";
-import { RegisterDTO, LoginDTO } from "./auth.types";
+import prisma from "../../config/prisma.js";
+import { RegisterDTO, LoginDTO } from "./auth.types.js";
 
 export class AuthService {
   static async register(data: RegisterDTO) {
@@ -12,7 +12,7 @@ export class AuthService {
         username: data.username,
         email: data.email,
         passwordHash: hashedPassword,
-        roleId: 1, 
+        roleId: 1,
       },
     });
 

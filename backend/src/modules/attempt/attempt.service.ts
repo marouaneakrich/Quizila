@@ -1,5 +1,5 @@
-import prisma from "../../config/prisma";
-import { AIService } from "../ai/ai.service";
+import prisma from "../../config/prisma.js";
+import { AIService } from "../ai/ai.service.js";
 
 export class AttemptService {
   static async start(

@@ -1,5 +1,5 @@
-import { GenerateQuestionsInput, AIQuestion } from "./ai.types";
-import { generateQcmPrompt } from "./ai.prompt";
+import { GenerateQuestionsInput, AIQuestion } from "./ai.types.js";
+import { generateQcmPrompt } from "./ai.prompt.js";
 
 export class AIService {
   static async generateQuestions(

@@ -10,8 +10,8 @@ export const authMiddleware = (
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET!);
-    req.user = payload;
+    const payload = jwt.verify(token, process.env.JWT_SECRET!) as any;
+    req.user = { userId: payload.userId, ...payload };
     next();
   } catch {
     res.status(401).json({ message: "Invalid token" });

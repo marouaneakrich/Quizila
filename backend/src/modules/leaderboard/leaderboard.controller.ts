@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { LeaderboardService } from "./leaderboard.service";
+import { LeaderboardService } from "./leaderboard.service.js";
 
 export class LeaderboardController {
   static async global(req: Request, res: Response) {
@@ -9,6 +9,7 @@ export class LeaderboardController {
   }
 
   static async me(req: Request, res: Response) {
+    if (!req.user) return res.status(401).json({ message: "Unauthorized" });
     const stats = await LeaderboardService.userStats(req.user.userId);
     res.json(stats);
   }

@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { QuizService } from "./quiz.service";
+import { QuizService } from "./quiz.service.js";
 
 export class QuizController {
   static async create(req: Request, res: Response) {
+    if (!req.user) return res.status(401).json({ message: "Unauthorized" });
     const quiz = await QuizService.create(
       req.body,
       req.user.userId

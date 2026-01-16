@@ -1,5 +1,5 @@
-import prisma from "../../config/prisma";
-import { CreateQuizDTO, UpdateQuizDTO } from "./quiz.types";
+import prisma from "../../config/prisma.js";
+import { CreateQuizDTO, UpdateQuizDTO } from "./quiz.types.js";
 
 export class QuizService {
   static create(data: CreateQuizDTO, userId: number) {

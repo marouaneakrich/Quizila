@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { QuizController } from "./quiz.controller";
-import { authMiddleware } from "../../middlewares/auth.middleware";
-import { validate } from "../../middlewares/validate.middleware";
-import { createQuizSchema, updateQuizSchema } from "./quiz.schema";
+import { QuizController } from "./quiz.controller.js";
+import { authMiddleware } from "../../middlewares/auth.middleware.js";
+import { validate } from "../../middlewares/validate.middleware.js";
+import { createQuizSchema, updateQuizSchema } from "./quiz.schema.js";
 
 const router = Router();
 

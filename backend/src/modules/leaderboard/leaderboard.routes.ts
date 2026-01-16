@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { LeaderboardController } from "./leaderboard.controller";
-import { authMiddleware } from "../../middlewares/auth.middleware";
+import { LeaderboardController } from "./leaderboard.controller.js";
+import { authMiddleware } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma";
+import prisma from "../../config/prisma.js";
 
 export class LeaderboardService {
   static async global(limit = 10) {
@@ -22,7 +22,7 @@ export class LeaderboardService {
     });
 
     const totalScore = attempts.reduce(
-      (sum, a) => sum + a.score,
+      (sum: number, a: { score: number }) => sum + a.score,
       0
     );
 
