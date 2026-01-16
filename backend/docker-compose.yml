@@ -1,11 +1,11 @@
 services:
   postgres:
-    image: postgres:15-alpine
+    image: postgres:17-alpine
     container_name: quizila-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: quizila
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: marouaneakrich
       POSTGRES_DB: quizila
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -21,19 +21,19 @@ services:
     image: redis:7-alpine
     container_name: quizila-redis
     restart: unless-stopped
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+    command: redis-server --requirepass marouaneakrich
     volumes:
       - redis_data:/data
     networks:
       - quizila-network
     healthcheck:
-      test: ["CMD", "redis-cli", "--pass", "${REDIS_PASSWORD}", "ping"]
+      test: ["CMD", "redis-cli", "--pass", "marouaneakrich", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   backend:
-    image: ${DOCKERHUB_USERNAME}/quizila:latest
+    image: marouaneakrich/quizila:latest
     container_name: quizila-backend
     restart: unless-stopped
     depends_on:
@@ -42,8 +42,8 @@ services:
       redis:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://quizila:${POSTGRES_PASSWORD}@postgres:5432/quizila
-      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      DATABASE_URL: postgresql://quizila:marouaneakrich@postgres:5432/quizila
+      REDIS_URL: redis://:marouaneakrich@redis:6379
       NODE_ENV: production
     ports:
       - "127.0.0.1:5000:5000"
