@@ -34,7 +34,7 @@ jobs:
           username: deployer
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull deployer/quizila:latest
-            docker stop quizila || true
-            docker rm quizila || true
-            docker run -d --name quizila -p 127.0.0.1:5000:5000 --restart unless-stopped --env-file /home/deployer/.env deployer/quizila:latest
+            podman pull deployer/quizila:latest
+            podman stop quizila || true
+            podman rm quizila || true
+            podman run -d --name quizila -p 127.0.0.1:5000:5000 --restart unless-stopped --env-file /home/deployer/.env deployer/quizila:latest
