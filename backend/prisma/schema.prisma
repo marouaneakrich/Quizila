@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://quizila:marouaneakrich@postgres:5432/quizila"
+  url      = env("DATABASE_URL")
 }
 model Role {
   id    Int    @id @default(autoincrement())
